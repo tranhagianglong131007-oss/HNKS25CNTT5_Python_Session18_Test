@@ -16,9 +16,9 @@ def performence_score(matches, goals, assitsts):
 def rank_performence(score):
     if score < 15:
         return "Cần thanh lý/Cho mượn"
-    elif score <= 15 or score < 30:
+    elif 15 <= score < 30:
         return "Dự bị chiến lược"
-    elif score <= 30 or score < 50:
+    elif 30 <= score < 50:
         return "Trụ cột đội bóng"
     else:
         return "Ngôi sao đẳng cấp"
@@ -179,16 +179,70 @@ def update_player(player):
 def delete_player(players):
     while True:
         delete_id = input("Nhập mã cầu thủ muốn xóa: ").strip().upper()
-        
+
         if delete_id == "":
             print("Mã cầu thủ không được để trống")
             continue
+
         for player in players:
             if player['id'] == delete_id:
-                players.remove(player)
-                print("Xóa cầu thủ thành công")
-                return
+                print(f"Tìm thấy cầu thủ: {player['name']}")
+
+                while True:
+                    confirm = input("Bạn có chắc muốn xóa? (Y/N): ").strip().upper()
+
+                    if confirm == "Y":
+                        players.remove(player)
+                        print("Xóa cầu thủ thành công!")
+                        return
+
+                    elif confirm == "N":
+                        print("Đã hủy thao tác xóa.")
+                        return
+
+                    else:
+                        print("Vui lòng nhập Y hoặc N!")
+
         print("Không tìm thấy cầu thủ")
+
+def find_player(players):
+    while True:
+        choose = input("""
+                1. Tim kiem chinh xac theo ID
+                2. tim kiem gan dung theo ten CT
+                3. thoat chuong trinh
+                """)
+        match choose:
+            case "1":
+                while True:
+                    lst= []
+                    find_id = input("Nhap ma CT muon tim kiem ")
+                    if find_id == "":
+                        print("Ma cau thu khong duoc de trong")
+                        continue
+                    for i in players:
+                        if i['id'] == find_id:
+                            lst.append(i)
+                    if len(lst) != 0:
+                        for index, value in enumerate(lst, start=1):
+                            print(f"STT: {index} | id: {value['id']} | Họ và tên: {value['name']}")
+                    break
+            
+            case "2":
+                while True:
+                    lst =[]
+                    find_name = input("Nhap ten cau thu muon tim kiem")
+                    if find_name == "":
+                        print("Ten khong dc de trong ")
+                    for i in players:
+                        if find_name in i["name"]:
+                            lst.append(i)
+                    if len(lst) != 0:
+                        for index, value in enumerate(lst, start=1):
+                            print(f"STT: {index} | id: {value['id']} | Họ và tên: {value['name']}")
+                    break
+
+
 
 def thong_ke_phong_do(players):
     if len(players) == 0:
